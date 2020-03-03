@@ -80,13 +80,15 @@ const Controller = function(player, options) {
 
 
 Controller.IMA_DEFAULTS = {
-  debug: false,
-  timeout: 5000,
-  prerollTimeout: 1000,
   adLabel: 'Advertisement',
   adLabelNofN: 'of',
-  showControlsForJSAds: true,
+  debug: false,
+  disableAdControls: false,
+  prerollTimeout: 1000,
+  preventLateAdStart: false,
   requestMode: 'onLoad',
+  showControlsForJSAds: true,
+  timeout: 5000,
 };
 
 /**
@@ -490,6 +492,13 @@ Controller.prototype.onPlayerReadyForPreroll = function() {
   this.sdkImpl.onPlayerReadyForPreroll();
 };
 
+/**
+ * Called if the ad times out.
+ */
+Controller.prototype.onAdTimeout = function() {
+  this.sdkImpl.onAdTimeout();
+};
+
 
 /**
  * Called when the player is ready.
@@ -639,7 +648,7 @@ Controller.prototype.setAdBreakReadyListener = function(listener) {
 Controller.prototype.setShowCountdown = function(showCountdownIn) {
   this.adUi.setShowCountdown(showCountdownIn);
   this.showCountdown = showCountdownIn;
-  this.countdownDiv.style.display = this.showCountdown ? 'block' : 'none';
+  this.adUi.countdownDiv.style.display = this.showCountdown ? 'block' : 'none';
 };
 
 

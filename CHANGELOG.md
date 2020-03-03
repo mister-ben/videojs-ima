@@ -1,3 +1,15 @@
+<a name="1.8.0"></a>
+# [1.8.0](https://github.com/googleads/videojs-ima/compare/v1.7.5...v1.8.0) (2020-03-03)
+
+<a name="1.7.5"></a>
+## [1.7.5](https://github.com/googleads/videojs-ima/compare/v1.7.4...v1.7.5) (2020-02-24)
+
+<a name="1.7.4"></a>
+## [1.7.4](https://github.com/googleads/videojs-ima/compare/v1.7.3...v1.7.4) (2019-12-12)
+
+<a name="1.7.3"></a>
+## [1.7.3](https://github.com/googleads/videojs-ima/compare/v1.7.1...v1.7.3) (2019-12-12)
+
 <a name="1.7.1"></a>
 ## [1.7.1](https://github.com/googleads/videojs-ima/compare/v1.7.0...v1.7.1) (2019-10-14)
 

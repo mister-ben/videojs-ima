@@ -165,7 +165,7 @@ SdkImpl.prototype.initAdObjects = function() {
     this.adsLoader.getSettings().setVpaidMode(
         google.ima.ImaSdkSettings.VpaidMode.DISABLED);
   }
-  if (this.controller.getSettings().vpaidMode) {
+  if (this.controller.getSettings().vpaidMode !== undefined) {
     this.adsLoader.getSettings().setVpaidMode(
         this.controller.getSettings().vpaidMode);
   }
@@ -178,6 +178,11 @@ SdkImpl.prototype.initAdObjects = function() {
   if (this.controller.getSettings().numRedirects) {
     this.adsLoader.getSettings().setNumRedirects(
         this.controller.getSettings().numRedirects);
+  }
+
+  if (this.controller.getSettings().sessionId) {
+    this.adsLoader.getSettings().setSessionId(
+        this.controller.getSettings().sessionId);
   }
 
   this.adsLoader.getSettings().setPlayerType('videojs-ima');
@@ -290,16 +295,12 @@ SdkImpl.prototype.onAdsManagerLoaded = function(adsManagerLoadedEvent) {
   this.adsManager.addEventListener(
       google.ima.AdEvent.Type.LOG,
       this.onAdLog.bind(this));
-
-  if (this.controller.getIsMobile()) {
-    // Show/hide controls on pause and resume (triggered by tap).
-    this.adsManager.addEventListener(
-        google.ima.AdEvent.Type.PAUSED,
-        this.onAdPaused.bind(this));
-    this.adsManager.addEventListener(
-        google.ima.AdEvent.Type.RESUMED,
-        this.onAdResumed.bind(this));
-  }
+  this.adsManager.addEventListener(
+      google.ima.AdEvent.Type.PAUSED,
+      this.onAdPaused.bind(this));
+  this.adsManager.addEventListener(
+      google.ima.AdEvent.Type.RESUMED,
+      this.onAdResumed.bind(this));
 
   this.controller.playerWrapper.vjsPlayer.trigger({
     type: 'ads-manager',
@@ -329,7 +330,7 @@ SdkImpl.prototype.onAdsManagerLoaded = function(adsManagerLoadedEvent) {
  * Listener for errors fired by the AdsLoader.
  * @param {google.ima.AdErrorEvent} event The error event thrown by the
  *     AdsLoader. See
- *     https://developers.google.com/interactive-media-ads/docs/sdks/html5/v3/apis#ima.AdError.Type
+ *     https://developers.google.com/interactive-media-ads/docs/sdks/html5/client-side/reference/js/google.ima.AdError#.Type
  */
 SdkImpl.prototype.onAdsLoaderError = function(event) {
   window.console.warn('AdsLoader error: ' + event.getError());
@@ -534,9 +535,11 @@ SdkImpl.prototype.onContentComplete = function() {
     this.contentCompleteCalled = true;
   }
 
-  if (this.adsManager &&
+  if ((this.adsManager &&
       this.adsManager.getCuePoints() &&
-      !this.adsManager.getCuePoints().includes(-1)) {
+      !this.adsManager.getCuePoints().includes(-1))
+      ||
+      !this.adsManager) {
     this.controller.onNoPostroll();
   }
 
@@ -772,7 +775,7 @@ SdkImpl.prototype.playAdBreak = function() {
 /**
  * Ads an EventListener to the AdsManager. For a list of available events,
  * see
- * https://developers.google.com/interactive-media-ads/docs/sdks/html5/v3/apis#ima.AdEvent.Type
+ * https://developers.google.com/interactive-media-ads/docs/sdks/html5/client-side/reference/js/google.ima.AdEvent#.Type
  * @param {google.ima.AdEvent.Type} event The AdEvent.Type for which to
  *     listen.
  * @param {callback} callback The method to call when the event is fired.

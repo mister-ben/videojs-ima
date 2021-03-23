@@ -40,9 +40,18 @@ Releases should only be created by the repository owners. If you're not an owner
 and think we're in need of a new release, please open an issue in our
 [issue tracker](https://github.com/googleads/videojs-ima/issues).
 
-To create a new release, run the following:
+To create a new release, run the following (you may need to run `npm login` first):
 
 ```
 npm version [major|minor|patch]
 npm publish
 ```
+
+Push changes in `dist/` to the github repo.
+Confirm that these files are on the correct version.
+
+## Common issues
+
+If the plugin starts failing the [travis-ci](https://travis-ci.org/github/googleads/videojs-ima) test,
+a possible cause is an out of date version of `chromedriver`. To fix the issue, simply update this
+dependency to the [latest chromdriver version](https://www.npmjs.com/package/chromedriver).
